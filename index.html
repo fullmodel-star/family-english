@@ -295,7 +295,7 @@ html[data-theme=dark] .banner.trip{background:linear-gradient(135deg,#1a1f3a,#14
 
 <div id="view-search" class="wrap hidden">
   <div class="section-title">🔎 全句庫搜尋（隨查隨用）</div>
-  <input class="searchbox" id="searchInput" placeholder="輸入中文或英文，例：退稅、window seat" oninput="doSearch(this.value)">
+  <input class="searchbox" id="searchInput" placeholder="輸入中文或英文，例：吃飯、good morning" oninput="doSearch(this.value)">
   <div id="searchRes" style="margin-top:12px"></div>
 </div>
 
@@ -355,7 +355,7 @@ const todayStr=()=>fmt(new Date());
 const BANDS={
   all:{name:"一般",emoji:"🙂",desc:"全部關卡與難度",levels:[1,2,3],hide:[],big:false,homo:false},
   senior:{name:"長輩",emoji:"👵",desc:"只留最基礎救命句、大字、諧音發音",levels:[1],hide:[],big:true,homo:true},
-  kid:{name:"兒童",emoji:"🧒",desc:"藏大人關卡、大字＋諧音，只練簡單句",levels:[1,2],hide:[],big:true,homo:true},
+  kid:{name:"兒童",emoji:"🧒",desc:"藏進階關卡、大字，只練簡單句",levels:[1,2],hide:[],big:true,homo:false},
   adult:{name:"成人",emoji:"💼",desc:"全部關卡與進階句，高效實用",levels:[1,2,3],hide:[],big:false,homo:false}
 };
 function band(){return BANDS[S.band]||BANDS.all}
@@ -456,18 +456,10 @@ function renderHome(){
   renderTopStats();
   const due=dueCards().length,done=S.dailyCount[todayStr()]||0;
   let b='';
-  if(G.trip&&G.trip.date){
-    const d=tripDays();
-    const todo=tripScenarios().filter(sc=>scenarioPct(sc)<100).slice(0,3).map(sc=>sc.icon+sc.title).join('、')||'重點都練完了 🎉';
-    b+=`<div class="banner trip"><div class="big">✈️</div><div class="t"><b>${d>0?`距離出發還有 ${d} 天`:d===0?'今天出發！':'旅程進行中'}${G.trip.dest?' · '+G.trip.dest:''}</b><small>今天先練：${todo}</small></div><button class="go" onclick="openCheatSheet()">速記卡</button></div>`;
-  }else{
-    b+=`<div class="banner trip"><div class="big">✈️</div><div class="t"><b>設定這趟旅程</b><small>選出發日＋旅遊型態，我幫你排練習順序＋做行前速記卡</small></div><button class="go" onclick="openTripWizard()">開始</button></div>`;
-  }
   if(canRescueStreak())b+=`<div class="banner sos"><div class="big">🛡️</div><div class="t"><b>連續紀錄快斷了！</b><small>昨天沒練？用補打卡救回來（每週 1 次）</small></div><button class="go" onclick="useFreeze()">補打卡</button></div>`;
   if(due>0)b+=`<div class="banner rev"><div class="big">🔁</div><div class="t"><b>今天有 ${due} 張卡該複習</b><small>趁記憶還在時複習最有效</small></div><button class="go" onclick="startReview()">開始</button></div>`;
   if(done<S.goal)b+=`<div class="banner"><div class="big">🎯</div><div class="t"><b>今日進度 ${done}/${S.goal}</b><small>再練 ${S.goal-done} 張就達標，維持連續打卡 🔥</small></div><button class="go" onclick="startDaily()">今日練習</button></div>`;
   else b+=`<div class="banner"><div class="big">🎉</div><div class="t"><b>今日目標達成！${streak()} 天連續</b><small>還想練可繼續挑戰任一關卡</small></div></div>`;
-  b+=`<div class="banner sos"><div class="big">🆘</div><div class="t"><b>救命短句・出國隨身</b><small>報案電話、過敏發作、被扒、迷路…一頁搞定</small></div><button class="go" onclick="go('sos')">打開</button></div>`;
   $('#dailyBanner').innerHTML=b;
   const list=scenList();
   $('#gridTitle').textContent=`🗺️ 情境關卡（${band().emoji} ${band().name}模式 · ${list.length} 關）`;
@@ -662,8 +654,6 @@ function renderSOS(){
   let h=`<div class="section-title">🗣️ 卡住時的救急句（聽不懂／講不出來就翻這頁）</div>
     <p style="color:var(--sub);font-size:.82rem;margin:0 4px 10px">不管在哪個情境，一卡住就用這幾句。點 🔊 播放，或把螢幕轉給對方看。</p>`;
   h+=REPAIR.map(o=>`<div class="pitem"><div class="body"><div class="en">${o.en}</div><div class="zh">${o.zh}</div><div class="homo">🗣️ ${o.homophone}</div></div><div class="acts"><button class="rbtn" onclick="say(${esc(o.en)})">🔊</button></div></div>`).join('');
-  h+=`<div class="pitem sos-item"><div class="body"><div class="en">🪪 我的旅遊資料卡</div><div class="zh">填過敏原、血型、住宿、緊急電話，緊急時給對方看</div></div><div class="acts"><button class="rbtn" onclick="openMeCard()">開</button></div></div>`;
-  h+=`<div class="pitem sos-item"><div class="body"><div class="en">🧒 兒童走失自保卡</div><div class="zh">迷路時給大人看、可一鍵撥給爸媽（先設定電話）</div></div><div class="acts"><button class="rbtn" onclick="openLostCard()">開</button></div></div>`;
   h+=`<div class="section-title">🆘 救命 & 生存短句</div>
     <p style="color:var(--sub);font-size:.82rem;margin:0 4px 10px">最該先學會的關鍵句，短到能背、能指著講。點 🔊 聽發音。</p>`;
   h+=surv.map(o=>`<div class="pitem sos-item"><div class="body">
