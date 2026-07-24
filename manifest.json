@@ -1,0 +1,17 @@
+{
+  "name": "家庭生活英語",
+  "short_name": "家庭生活",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F7F3EC",
+  "theme_color": "#141E2B",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
