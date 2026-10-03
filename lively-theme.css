@@ -1,0 +1,14 @@
+/* 由 packages/lively/sync_lively.py 產生，請勿手改（改 apps.json 再重跑）。
+   910_family-english｜主題色相來源 #e76f51｜engine=conv｜level=low */
+:root{--lv-engine:conv;--lv-level:low}
+html:not([data-theme="dark"]),html:not([data-theme="dark"]) body{
+  --lv-btn:#EA9580;--lv-btn-d:#D4694E;--lv-ink:#67200F;--lv-acc:#B83D1E;
+  --lv-soft:#FBE9E4;--lv-soft2:#F0CFC7;
+}
+html[data-theme="dark"],html[data-theme="dark"] body{
+  --lv-btn:#EA9580;--lv-btn-d:#D4694E;--lv-ink:#67200F;--lv-acc:#E7836A;
+  --lv-soft:#412A25;--lv-soft2:#624037;
+}
+@media (prefers-color-scheme:dark){html:not([data-theme]),html:not([data-theme]) body{
+  --lv-acc:#E7836A;--lv-soft:#412A25;--lv-soft2:#624037;
+}}
